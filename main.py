@@ -1,8 +1,17 @@
+#! python3
 """
 Conway's Game of Life.
 
 Script to simulate Conway's Game of Life.
+
+Usage:
+    main.py [--save_gif]
+
+Options: 
+    --save_gif   Save gif after closing animation. [default: False]
+
 """
+import docopt
 
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation
@@ -51,11 +60,14 @@ class GameLife:
 
 
 class Interface:
-    def __init__(self):
-        self._initial_state =  np.random.normal(loc=0.0,scale=1.0,size=(100,100))<0.0#np.zeros((100,100),dtype=bool)
+    def __init__(self,save=False):
+        self._initial_state =  np.random.normal(loc=0.0,scale=1.0,size=(100,150)) < 0.0
         self.fig, self.axis = plt.subplots(1,1)
+        self.fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
         self.img = self.axis.imshow(self._initial_state, vmin=0, vmax=1, cmap='plasma')
         self.axis.axis('off')
+
+        self.save = save
         self.run()
         #self.get_initial_state()
         
@@ -79,18 +91,24 @@ class Interface:
         def animate(i):
             state = game.update()
             self.img.set_data(state)
+            self.axis.set_title(f'Generations: {game.generations}')
 
         ani = animation.FuncAnimation(self.fig, animate, interval=100)
         plt.show()
+        if self.save:
+            print('Saving...')
+            ani.save('animation.gif', writer='imagemagick', fps=10)
+        
 
 
-def main():
-    interface = Interface()
+def main(args):
+    interface = Interface(save=args['--save_gif'])
     plt.show()
     
 
 if __name__ == "__main__":
-    main()
+    args = docopt.docopt(__doc__)
+    main(args)
 
 
 
