@@ -5,17 +5,18 @@ Conway's Game of Life.
 Script to simulate Conway's Game of Life.
 
 Usage:
-    main.py [--save_gif]
+    main.py [--initialize --save_gif]
 
 Options: 
-    --save_gif   Save gif after closing animation. [default: False]
-
+    --save_gif      Save gif after closing animation. [default: False]
+    --initialize    Select initial state by hand. [default: False]
 """
 import docopt
 
 import matplotlib.pyplot as plt 
 import matplotlib.animation as animation
 from matplotlib import style
+from numpy import random
 
 from scipy import signal
 import numpy as np 
@@ -60,18 +61,19 @@ class GameLife:
 
 
 class Interface:
-    def __init__(self,save=False):
-        self._initial_state =  np.random.normal(loc=0.0,scale=1.0,size=(100,150)) < 0.0
+    def __init__(self,save=False, random=True):
+
+        self._initial_state =  random*np.random.normal(loc=0.0,scale=1.0,size=(100,150)) < 0.0
         self.fig, self.axis = plt.subplots(1,1)
         self.fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
         self.img = self.axis.imshow(self._initial_state, vmin=0, vmax=1, cmap='plasma')
         self.axis.axis('off')
 
         self.save = save
-        self.run()
-        #self.get_initial_state()
+        _ = self.run() if random else self.get_initial_state()
         
     def get_initial_state(self,):
+        self.axis.set_title(f'Click to activate cell,Double click to end')
         self.cid = self.fig.canvas.mpl_connect('button_press_event', self.onclick)
 
     def onclick(self,event):
@@ -82,7 +84,7 @@ class Interface:
             self.img.set_data(self._initial_state)
             plt.draw()
             
-        if np.sum(self._initial_state) >= 10:
+        if event.dblclick:
             self.fig.canvas.mpl_disconnect(self.cid)
             self.run()
 
@@ -102,7 +104,9 @@ class Interface:
 
 
 def main(args):
-    interface = Interface(save=args['--save_gif'])
+    save = args['--save_gif']
+    random = not args['--initialize']
+    interface = Interface(save,random)
     plt.show()
     
 

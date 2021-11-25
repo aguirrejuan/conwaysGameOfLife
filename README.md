@@ -45,7 +45,7 @@ Options:
 ## TODO
 
 -  [ ]  Figure out how use ``` plt.show ``` in the right way.
--  [ ]  Add capability to choose random of manual initialization.
+-  [x]  Add capability to choose random of manual initialization.
 -  [ ]  Maybe we can built a zoo of infinite machines.
 
 
