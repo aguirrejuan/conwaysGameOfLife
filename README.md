@@ -18,16 +18,16 @@ The three rules are:
 
 Something interesting is that, in the time where memory could not be wasted, a lot of effect for video games were developed in this way, in base a rules and not in memory.
 
-## Install requirements
+## Install
 
 ```
-python3 -m pip install -r requirements.txt
+pip install .
 ```
 
 ## Run Demo
 
 ``` 
-python3 main.py -h 
+conways -h 
 ```
 ```
 Conway's Game of Life.
@@ -35,7 +35,7 @@ Conway's Game of Life.
 Script to simulate Conway's Game of Life.
 
 Usage:
-    main.py [--save_gif]
+    conways [--save_gif]
 
 Options: 
     --save_gif   Save gif after closing animation. [default: False]
