@@ -1,7 +1,7 @@
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt 
 import numpy as np
-
+from conways_game_of_life import logger
 
 class GameController:
     def __init__(self, model, view, save=False):
@@ -35,7 +35,7 @@ class GameController:
         plt.show()
         
         if self.save:
-            print('Saving...')
+            logger.info('Saving animation')
             ani.save('animation.gif', writer='imagemagick', fps=10)
 
 

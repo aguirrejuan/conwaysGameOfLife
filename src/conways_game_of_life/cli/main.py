@@ -1,38 +1,34 @@
-
-"""
-Conway's Game of Life.
-
-Script to simulate Conway's Game of Life.
-
-Usage:
-    conways [--initialize --save_gif]
-
-Options: 
-    --save_gif      Save gif after closing animation. [default: False]
-    --initialize    Select initial state by hand. [default: False]
-"""
-import docopt
+import typer
+import numpy as np
 from conways_game_of_life.model import GameLife
 from conways_game_of_life.controller import GameController
 from conways_game_of_life.view import Interface
-import numpy as np
 
+# Initialize Typer CLI
+cli = typer.Typer(add_completion=False)
 
-def main():
-    args = docopt.docopt(__doc__)
-    save = args['--save_gif']
-    random_state = not args['--initialize']
+@cli.command()
+def conways(
+    save_gif: bool = typer.Option(False, help="Save gif after closing animation."),
+    initialize: bool = typer.Option(False, help="Select initial state by hand."),
+):
+    """
+    Simulate Conway's Game of Life.
+    """
+    # Determine if we use a random initial state or a user-defined initial state
+    random_state = not initialize
     initial_state = np.random.rand(100, 150) < 0.5 if random_state else np.zeros((100, 150), dtype=bool)
-    
+
+    # Set up the view, model, and controller
     view = Interface(initial_state)
     model = GameLife(initial_state)
-    controller = GameController(model, view, save)
-    
+    controller = GameController(model, view, save_gif)
+
+    # Run the simulation based on initialization option
     if not random_state:
         controller.get_initial_state()
     else:
         controller.run()
 
 if __name__ == "__main__":
-    main()
-
+    cli()
