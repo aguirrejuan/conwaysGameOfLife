@@ -2,7 +2,7 @@
 
 <center>
     <figure>
-        <img src='images/animation.gif' width="300"> 
+        <img src='assets/animation.gif' width="300"> 
         <figcaption>Conway's Game of Life</figcaption> 
     </figure>
 </center>

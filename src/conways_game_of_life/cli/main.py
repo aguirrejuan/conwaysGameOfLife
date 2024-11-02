@@ -12,9 +12,9 @@ Options:
     --initialize    Select initial state by hand. [default: False]
 """
 import docopt
-from .model import GameLife
-from .view import Interface
-from .controller import GameController
+from conways_game_of_life.model import GameLife
+from conways_game_of_life.controller import GameController
+from conways_game_of_life.view import Interface
 import numpy as np
 
 
