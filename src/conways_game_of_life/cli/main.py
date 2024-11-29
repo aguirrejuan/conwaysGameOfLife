@@ -1,11 +1,13 @@
-import typer
 import numpy as np
-from conways_game_of_life.model import GameLife
+import typer
+
 from conways_game_of_life.controller import GameController
+from conways_game_of_life.model import GameLife
 from conways_game_of_life.view import Interface
 
 # Initialize Typer CLI
 cli = typer.Typer(add_completion=False)
+
 
 @cli.command()
 def conways(
@@ -17,7 +19,11 @@ def conways(
     """
     # Determine if we use a random initial state or a user-defined initial state
     random_state = not initialize
-    initial_state = np.random.rand(100, 150) < 0.5 if random_state else np.zeros((100, 150), dtype=bool)
+    initial_state = (
+        np.random.rand(100, 150) < 0.5
+        if random_state
+        else np.zeros((100, 150), dtype=bool)
+    )
 
     # Set up the view, model, and controller
     view = Interface(initial_state)
@@ -29,6 +35,7 @@ def conways(
         controller.get_initial_state()
     else:
         controller.run()
+
 
 if __name__ == "__main__":
     cli()
